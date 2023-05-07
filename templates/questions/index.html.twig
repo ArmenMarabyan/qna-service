@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello QuestionsController!{% endblock %}
+{% block search_term %}{{ term }}{% endblock %}
+
+
+
+{% block body %}
+    <div class="searchbox mt-5">
+        <div class="row">
+            <div class="col-lg-6 m-auto">
+                <form class="d-flex" method="GET" action="{{ path('app_questions') }}">
+                    <input class="form-control me-2" type="search" placeholder="Search" value="{{ term }}" aria-label="Search" name="search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
+        <img class="me-3" src="/docs/5.0/assets/brand/bootstrap-logo-white.svg" alt="" width="48" height="38">
+        <div class="lh-1">
+            <h1 class="h6 mb-0 text-white lh-1">Questions</h1>
+            <small></small>
+        </div>
+    </div>
+
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <h6 class="border-bottom pb-2 mb-0">Questions: {{ term }}</h6>
+
+        <div class="questions">
+            {% for question in questions['items'] %}
+                <div class="d-flex text-muted pt-3">
+{#                    {% if question['owner']['profile_image'] is defined %}#}
+{#                        <img src="{{ question['owner']['profile_image'] }}" alt="" class="bd-placeholder-img flex-shrink-0 me-2 rounded">#}
+{#                    {% endif %}#}
+                    <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
+                        <div class="d-flex justify-content-between">
+                            <div class="question__info">
+                                <div class="tags">
+                                    {% for tag in question['tags'] %}
+                                        <a href="">{{ tag }},</a>
+                                    {% endfor %}
+                                </div>
+                                <div class="question__title mt-2">
+                                    <h2>
+                                        <a href="">{{ question['title'] }}</a>
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="answers_cnt text-right">
+                                <a href="{{ question['link'] }}" class="{% if question['is_answered'] %} green {% endif %}" >
+                                    <div>
+                                        {% if question['is_answered'] %}
+                                            <span><i class="fa-solid fa-circle-check"></i></span>
+                                            {{ question['answer_count'] }}
+                                        {% else %}
+                                            {{ question['answer_count'] }}
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        Answers
+                                    </div>
+                                </a>
+
+                            </div>
+                        </div>
+                        <div class="question__author mt-2">
+                            {% if question['owner']['profile_image'] is defined %}
+                                <img style="max-width: 20px;" src="{{ question['owner']['profile_image'] }}" alt="" class="bd-placeholder-img flex-shrink-0 me-2 rounded">
+                            {% endif %}
+                            <span class="{% if question['owner']['link'] is defined %} {{ question['owner']['link'] }} {% endif %}">{{ question['owner']['display_name'] }}</span>
+                        </div>
+                        <div class="question__stats mt-2">
+                            <ul class="d-flex">
+                                <li>{{ question['creation_date']|date("d-m-Y H:i:s") }} created date</li>
+                                <li>{{ question['view_count'] }} view count</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+
+        <small class="d-block text-end mt-3">
+            <a href="#">All suggestions</a>
+        </small>
+    </div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello IndexController!{% endblock %}
+
+{% block body %}
+    <div class="searchbox mt-5">
+        <div class="row">
+            <div class="col-lg-6 m-auto">
+                <form class="d-flex" method="GET" action="{{ path('app_questions') }}">
+                    <input class="form-control me-2" type="search" placeholder="Search" value="" aria-label="Search" name="search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
