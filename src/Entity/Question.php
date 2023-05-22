@@ -41,6 +41,14 @@ class Question
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\Column(type: Types::SMALLINT)]
+    private int $question_type = 1;
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new \DateTimeImmutable());
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -157,5 +165,17 @@ class Question
     public function __toString(): string
     {
         return $this->title;
+    }
+
+    public function getQuestionType(): ?int
+    {
+        return $this->question_type;
+    }
+
+    public function setQuestionType(int $question_type): self
+    {
+        $this->question_type = $question_type;
+
+        return $this;
     }
 }

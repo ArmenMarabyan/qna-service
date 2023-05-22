@@ -48,7 +48,7 @@ services:
     volumes:
       - ../:/var/www/symfony/
     ports:
-      - 8080:80
+      - 8088:80
     networks:
       - symfony
     env_file:

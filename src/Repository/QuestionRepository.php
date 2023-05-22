@@ -55,13 +55,15 @@ class QuestionRepository extends ServiceEntityRepository
             ->getResult(AbstractQuery::HYDRATE_ARRAY);
     }
 
-//    public function findOneBySomeField($value): ?Question
-//    {
-//        return $this->createQueryBuilder('q')
-//            ->andWhere('q.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findByUser(int $userId)
+    {
+        $questions = $this->createQueryBuilder('q')
+            ->andWhere('q.owner_id = :ownerId')
+            ->setParameter('ownerId', $userId)
+            ->orderBy('q.createdAt', 'desc')
+            ->getQuery()
+            ->getResult(AbstractQuery::HYDRATE_OBJECT);
+
+        return $questions;
+    }
 }
