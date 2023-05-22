@@ -39,9 +39,11 @@
                         <div class="d-flex justify-content-between">
                             <div class="question__info">
                                 <div class="tags">
-                                    {% for tag in question['tags'] %}
-                                        <a href="">{{ tag }},</a>
-                                    {% endfor %}
+                                    {% if question['tags'] is defined %}
+                                        {% for tag in question['tags'] %}
+                                            <a href="">{{ tag }},</a>
+                                        {% endfor %}
+                                    {% endif %}
                                 </div>
                                 <div class="question__title mt-2">
                                     <h2>
@@ -70,11 +72,11 @@
                             {% if question['owner']['profile_image'] is defined %}
                                 <img style="max-width: 20px;" src="{{ question['owner']['profile_image'] }}" alt="" class="bd-placeholder-img flex-shrink-0 me-2 rounded">
                             {% endif %}
-                            <span class="{% if question['owner']['link'] is defined %} {{ question['owner']['link'] }} {% endif %}">{{ question['owner']['display_name'] }}</span>
+                            <span class="{% if question['owner']['link'] is defined %} {{ question['owner']['link'] }} {% endif %}">{{ question['owner']['display_name'] ?? '' }}</span>
                         </div>
                         <div class="question__stats mt-2">
                             <ul class="d-flex">
-                                <li>{{ question['creation_date']|date("d-m-Y H:i:s") }} created date</li>
+                                <li>{{ question['creation_date'] ?? question['createdAt']|date("d-m-Y H:i:s") }} created date</li>
                                 <li>{{ question['view_count'] }} view count</li>
                             </ul>
                         </div>

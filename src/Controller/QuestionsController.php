@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\QuestionRepository;
+use App\Services\StackExchangeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +13,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class QuestionsController extends AbstractController
 {
     public function __construct(
-        private HttpClientInterface $client,
+        private StackExchangeService $stackExchangeService,
+        private QuestionRepository $questionRepository
     ) {
     }
 
@@ -21,17 +24,15 @@ class QuestionsController extends AbstractController
     public function index(Request $request): Response
     {
         $term = $request->get('search', null);
-        $url = "https://api.stackexchange.com/2.3/search?pagesize=100&order=desc&sort=activity&intitle={$term}&site=stackoverflow";
 
-        $response = $this->client->request(
-            'GET',
-            $url
-        );
+        if (!isset($term) || empty($term)) {
+            $questions['items'] = $this->questionRepository->get();
+        } else {
+            $questions = $this->stackExchangeService->search($term);
+        }
 
-//        $statusCode = $response->getStatusCode();
-//        $contentType = $response->getHeaders()['content-type'][0];
-        $content = $response->getContent();
-        $questions = $response->toArray();
+//        dd( $questions);
+
 
         return $this->render('questions/index.html.twig', [
             'questions' => $questions,
